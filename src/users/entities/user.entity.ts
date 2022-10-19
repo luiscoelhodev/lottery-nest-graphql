@@ -5,8 +5,6 @@ import * as bcrypt from 'bcrypt';
 @Entity({ name: 'users' })
 @ObjectType()
 export class User {
-  // @Field(() => Int, { description: 'Example field (placeholder)' })
-  // exampleField: number;
   @PrimaryGeneratedColumn()
   id: number;
 
