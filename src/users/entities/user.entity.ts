@@ -1,6 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { BeforeInsert, Column, CreateDateColumn, DataSourceOptions, Entity, Generated, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { BeforeInsert, Column, CreateDateColumn, DataSourceOptions, Entity, Generated, JoinColumn, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Bet } from 'src/bets/entities/bet.entity';
 
 @Entity({ name: 'users' })
 @ObjectType()
@@ -34,4 +35,7 @@ export class User {
     const salt = await bcrypt.genSalt()
     this.password = await bcrypt.hash(password || this.password, salt)
   }
+
+  @OneToMany(() => Bet, bet => bet.user)
+  bets?: Bet[]
 }
