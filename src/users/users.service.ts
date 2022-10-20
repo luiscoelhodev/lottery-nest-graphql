@@ -23,8 +23,11 @@ export class UsersService {
     return user;
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserInput: UpdateUserInput) {
+    const user = await this.usersRepository.findOneOrFail({ where: { id } })
+    this.usersRepository.merge(user, updateUserInput)
+
+    return await this.usersRepository.save(user);
   }
 
   remove(id: number) {

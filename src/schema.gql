@@ -80,11 +80,11 @@ input CreateUserInput {
 }
 
 input UpdateUserInput {
+  id: Int!
   name: String
   cpf: String
   email: String
   password: String
-  id: Int!
 }
 
 input CreateGameInput {
