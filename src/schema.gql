@@ -12,7 +12,7 @@ type Game {
   color: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  bets: [Bet!]!
+  bets: [Bet!]
 }
 
 """
@@ -37,7 +37,7 @@ type User {
   password: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  bets: [Bet!]!
+  bets: [Bet!]
 }
 
 type Cart {

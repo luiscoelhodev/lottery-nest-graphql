@@ -44,7 +44,7 @@ export class User {
     this.password = await bcrypt.hash(password || this.password, salt)
   }
 
-  @Field(() => [Bet])
+  @Field(() => [Bet], { nullable: true })
   @OneToMany(() => Bet, bet => bet.user)
   bets?: Bet[]
 }

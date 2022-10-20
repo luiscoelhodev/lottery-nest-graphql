@@ -41,7 +41,7 @@ export class Game {
   @UpdateDateColumn({ name: 'updated_at', type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
   updatedAt: Date;
 
-  @Field(() => [Bet])
+  @Field(() => [Bet], { nullable: true })
   @OneToMany(() => Bet, bet => bet.game)
   bets?: Bet[]
 }
