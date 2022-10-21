@@ -11,7 +11,7 @@ export class UsersService {
 
   async create(createUserInput: CreateUserInput) {
     const user = this.usersRepository.create(createUserInput)
-    return this.usersRepository.save(user);
+    return await this.usersRepository.save(user);
   }
 
   async findAll() {
@@ -33,7 +33,9 @@ export class UsersService {
   async remove(id: number) {
     try {
       const userFound = await this.usersRepository.findOneOrFail({ where: { id }})
-      return this.usersRepository.remove(userFound)
+      const copyOfUserFoundToBeUsedAsReturnType = { ...userFound }
+      await this.usersRepository.remove(userFound)
+      return copyOfUserFoundToBeUsedAsReturnType
     } catch (error) {
       return new NotFoundException('User not found to be deleted!')
     }
