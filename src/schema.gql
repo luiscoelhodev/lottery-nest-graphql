@@ -65,7 +65,7 @@ type Mutation {
   createGame(createGameInput: CreateGameInput!): Game!
   updateGame(updateGameInput: UpdateGameInput!): Game!
   removeGame(id: Int!): Game!
-  createBet(createBetInput: [CreateBetInput!]!): String!
+  createBets(createBetInput: [CreateBetInput!]!): String!
   updateBet(updateBetInput: UpdateBetInput!): Bet!
   removeBet(id: Int!): Bet!
   createCart(createCartInput: CreateCartInput!): Cart!

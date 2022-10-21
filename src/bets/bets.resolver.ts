@@ -9,7 +9,7 @@ export class BetsResolver {
   constructor(private readonly betsService: BetsService) {}
 
   @Mutation(() => String)
-  createBet(@Args('createBetInput', { type: () => [CreateBetInput]}) createBetInput: CreateBetInput[]) {
+  createBets(@Args('createBetInput', { type: () => [CreateBetInput]}) createBetInput: CreateBetInput[]) {
     return this.betsService.create(createBetInput);
   }
 
