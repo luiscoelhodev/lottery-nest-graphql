@@ -114,10 +114,8 @@ input CreateBetInput {
 }
 
 input UpdateBetInput {
-  userId: Int
-  gameType: String
-  numbers: String
   id: Int!
+  numbers: String
 }
 
 input CreateCartInput {

@@ -28,12 +28,14 @@ export class BetsService {
     return this.betsRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bet`;
+  async findOne(id: number) {
+    return await this.betsRepository.findOneOrFail({ where: { id } });
   }
 
-  update(id: number, updateBetInput: UpdateBetInput) {
-    return `This action updates a #${id} bet`;
+  async update(id: number, updateBetInput: UpdateBetInput) {
+    const betFound = await this.betsRepository.findOneOrFail({ where: { id }})
+    this.betsRepository.merge(betFound, updateBetInput);
+    return await this.betsRepository.save(betFound);
   }
 
   remove(id: number) {
