@@ -25,11 +25,11 @@ export class CartResolver {
 
   @Mutation(() => Cart)
   updateCart(@Args('updateCartInput') updateCartInput: UpdateCartInput) {
-    return this.cartService.update(updateCartInput.id, updateCartInput);
+    return this.cartService.update(updateCartInput);
   }
 
   @Mutation(() => Cart)
-  removeCart(@Args('id', { type: () => Int }) id: number) {
-    return this.cartService.remove(id);
+  removeCart() {
+    return this.cartService.remove();
   }
 }

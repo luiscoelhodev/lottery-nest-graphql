@@ -1,7 +1,11 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { InputType, Field, Float } from '@nestjs/graphql';
+import { IsPositive } from 'class-validator';
 
 @InputType()
 export class CreateCartInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  
+  @IsPositive()
+  @Field(() => Float)
+  minCartValue: number;
+
 }
