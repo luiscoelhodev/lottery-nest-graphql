@@ -8,8 +8,8 @@ import { UpdateBetInput } from './dto/update-bet.input';
 export class BetsResolver {
   constructor(private readonly betsService: BetsService) {}
 
-  @Mutation(() => Bet)
-  createBet(@Args('createBetInput') createBetInput: CreateBetInput) {
+  @Mutation(() => String)
+  createBet(@Args('createBetInput', { type: () => [CreateBetInput]}) createBetInput: CreateBetInput[]) {
     return this.betsService.create(createBetInput);
   }
 

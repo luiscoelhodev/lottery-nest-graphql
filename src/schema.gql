@@ -22,6 +22,7 @@ scalar DateTime
 
 type Bet {
   id: Int!
+  numbers: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   user: User!
@@ -64,7 +65,7 @@ type Mutation {
   createGame(createGameInput: CreateGameInput!): Game!
   updateGame(updateGameInput: UpdateGameInput!): Game!
   removeGame(id: Int!): Game!
-  createBet(createBetInput: CreateBetInput!): Bet!
+  createBet(createBetInput: [CreateBetInput!]!): String!
   updateBet(updateBetInput: UpdateBetInput!): Bet!
   removeBet(id: Int!): Bet!
   createCart(createCartInput: CreateCartInput!): Cart!
@@ -107,13 +108,15 @@ input UpdateGameInput {
 }
 
 input CreateBetInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  userId: Int!
+  gameType: String!
+  numbers: String!
 }
 
 input UpdateBetInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  userId: Int
+  gameType: String
+  numbers: String
   id: Int!
 }
 
