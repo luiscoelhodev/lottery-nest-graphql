@@ -88,14 +88,22 @@ input UpdateUserInput {
 }
 
 input CreateGameInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  type: String!
+  description: String!
+  range: Int!
+  price: Float!
+  minAndMaxNumber: Int!
+  color: String!
 }
 
 input UpdateGameInput {
-  """Example field (placeholder)"""
-  exampleField: Int
   id: Int!
+  type: String
+  description: String
+  range: Int
+  price: Float
+  minAndMaxNumber: Int
+  color: String
 }
 
 input CreateBetInput {

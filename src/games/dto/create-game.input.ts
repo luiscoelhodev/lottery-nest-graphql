@@ -1,7 +1,29 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { InputType, Int, Field, Float } from '@nestjs/graphql';
+import { IsAlphanumeric, IsNotEmpty, IsPositive} from 'class-validator';
 
 @InputType()
 export class CreateGameInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @IsAlphanumeric()
+  @Field()
+  type: string;
+
+  @IsNotEmpty()
+  @Field()
+  description: string;
+
+  @IsPositive()
+  @Field(() => Int)
+  range: number;
+
+  @IsPositive()
+  @Field(() => Float)
+  price: number
+
+  @IsPositive()
+  @Field(() => Int)
+  minAndMaxNumber: number;
+
+  @IsNotEmpty()
+  @Field()
+  color: string;
 }
