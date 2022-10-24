@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt'
 import { LoginUserInput } from './dto/login-user.input';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -19,13 +20,10 @@ export class AuthService {
     return null
   }
 
-  async login(loginCredentials: LoginUserInput) {
-    const user = await this.usersService.findOneByEmail(loginCredentials.email)
-    const {password, ...rest} = user
-
+  async login(user: User) {
     return {
       token: 'jwt',
-      user: rest
+      user
     }
   }
 }
