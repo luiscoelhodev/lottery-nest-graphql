@@ -56,6 +56,12 @@ type Query {
   bets: [Bet!]!
   bet(id: Int!): Bet!
   cart(id: Int!): Cart!
+  validateUser(validateUserObject: ValidateUser!): Boolean!
+}
+
+input ValidateUser {
+  email: String!
+  password: String!
 }
 
 type Mutation {
