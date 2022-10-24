@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Cart } from 'src/cart/entities/cart.entity';
 import { Game } from 'src/games/entities/game.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -9,9 +10,23 @@ import { Bet } from './entities/bet.entity';
 
 @Injectable()
 export class BetsService {
-  constructor(@InjectRepository(Bet) private betsRepository: Repository<Bet>, @InjectRepository(Game) private gamesRepository: Repository<Game>, @InjectRepository(User) private usersRepository: Repository<User>) {}
+  constructor(@InjectRepository(Bet) private betsRepository: Repository<Bet>, @InjectRepository(Game) private gamesRepository: Repository<Game>, @InjectRepository(User) private usersRepository: Repository<User>, @InjectRepository(Cart) private cartRepository: Repository<Cart>) {}
 
   async create(createBetInput: CreateBetInput[]) {
+
+    const cart = await this.cartRepository.find()
+    const minCartValue = cart[0].minCartValue
+    let totalCartPrice: number = 0
+
+    await Promise.all(    
+      createBetInput.map(async (bet) => {
+      const game = await this.gamesRepository.findOneByOrFail({type: bet.gameType})
+      totalCartPrice += Number(game.price)
+    }))
+
+    if (totalCartPrice < minCartValue) {
+      return new BadRequestException(`Minimum cart price must be R$${minCartValue}!`)
+    }
     await Promise.all(
       createBetInput.map(async (bet) => {
         const user = await this.usersRepository.findOneOrFail({ where: { id: bet.userId } })
