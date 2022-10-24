@@ -47,6 +47,11 @@ type Cart {
   updatedAt: DateTime!
 }
 
+type LoginResponse {
+  token: String!
+  user: User!
+}
+
 type Query {
   users: [User!]!
   user(id: Int!): User!
@@ -56,12 +61,6 @@ type Query {
   bets: [Bet!]!
   bet(id: Int!): Bet!
   cart(id: Int!): Cart!
-  validateUser(validateUserObject: ValidateUser!): Boolean!
-}
-
-input ValidateUser {
-  email: String!
-  password: String!
 }
 
 type Mutation {
@@ -77,6 +76,7 @@ type Mutation {
   createCart(createCartInput: CreateCartInput!): Cart!
   updateCart(updateCartInput: UpdateCartInput!): Cart!
   removeCart: Cart!
+  login(loginCredentials: LoginUserInput!): LoginResponse!
 }
 
 input CreateUserInput {
@@ -130,4 +130,9 @@ input CreateCartInput {
 
 input UpdateCartInput {
   minCartValue: Float!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
 }
