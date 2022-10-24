@@ -10,12 +10,13 @@ import { BetsModule } from './bets/bets.module';
 import { CartModule } from './cart/cart.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [TypeOrmModule.forRoot(dataSourceOptions), UsersModule, GamesModule, BetsModule, CartModule, GraphQLModule.forRoot<ApolloDriverConfig>({
     autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     driver: ApolloDriver
-  })],
+  }), AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

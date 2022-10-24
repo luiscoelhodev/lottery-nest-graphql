@@ -50,6 +50,7 @@ type Cart {
 type Query {
   users: [User!]!
   user(id: Int!): User!
+  findOneByEmail(email: String!): User!
   games: [Game!]!
   game(id: Int!): Game!
   bets: [Bet!]!
