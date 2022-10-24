@@ -14,13 +14,18 @@ export class UsersResolver {
   }
 
   @Query(() => [User], { name: 'users' })
-  findAll() {
+  findAll() { //TODO: Implement JWT using @UseGuards() which is like a middleware
     return this.usersService.findAll();
   }
 
   @Query(() => User, { name: 'user' })
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.usersService.findOne(id);
+  }
+
+  @Query(() => User)
+  findOneByEmail(@Args('email') email: string) {
+    return this.usersService.findOneByEmail(email);
   }
 
   @Mutation(() => User)

@@ -23,6 +23,11 @@ export class UsersService {
     return user;
   }
 
+  async findOneByEmail(email: string) {
+    const user = await this.usersRepository.findOneByOrFail({ email })
+    return user;
+  }
+
   async update(id: number, updateUserInput: UpdateUserInput) {
     const user = await this.usersRepository.findOneOrFail({ where: { id } })
     this.usersRepository.merge(user, updateUserInput)
