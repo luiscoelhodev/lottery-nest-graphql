@@ -159,7 +159,7 @@ input CreateRoleInput {
 }
 
 input UpdateRoleInput {
-  type: String
-  description: String
   id: Int!
+  type: String!
+  description: String!
 }

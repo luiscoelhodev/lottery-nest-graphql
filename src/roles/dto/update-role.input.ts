@@ -1,8 +1,17 @@
-import { CreateRoleInput } from './create-role.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import { InputType, Field, Int } from '@nestjs/graphql';
+import { IsAlpha, IsOptional } from 'class-validator';
 
 @InputType()
-export class UpdateRoleInput extends PartialType(CreateRoleInput) {
+export class UpdateRoleInput {
   @Field(() => Int)
   id: number;
+
+  @Field()
+  @IsOptional()
+  @IsAlpha()
+  type: string;
+
+  @Field()
+  @IsOptional()
+  description: string;
 }
