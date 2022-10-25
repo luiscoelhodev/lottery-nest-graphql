@@ -29,6 +29,15 @@ type Bet {
   game: Game!
 }
 
+type Role {
+  id: Int!
+  type: String!
+  description: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  users: [User!]!
+}
+
 type User {
   id: Int!
   secureId: String!
@@ -38,6 +47,7 @@ type User {
   createdAt: DateTime!
   updatedAt: DateTime!
   bets: [Bet!]
+  roles: [Role!]!
 }
 
 type Cart {
@@ -61,6 +71,8 @@ type Query {
   bets: [Bet!]!
   bet(id: Int!): Bet!
   cart(id: Int!): Cart!
+  roles: [Role!]!
+  role(id: Int!): Role!
 }
 
 type Mutation {
@@ -77,6 +89,9 @@ type Mutation {
   updateCart(updateCartInput: UpdateCartInput!): Cart!
   removeCart: Cart!
   login(loginCredentials: LoginUserInput!): LoginResponse!
+  createRole(createRoleInput: CreateRoleInput!): Role!
+  updateRole(updateRoleInput: UpdateRoleInput!): Role!
+  removeRole(id: Int!): Role!
 }
 
 input CreateUserInput {
@@ -135,4 +150,15 @@ input UpdateCartInput {
 input LoginUserInput {
   email: String!
   password: String!
+}
+
+input CreateRoleInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateRoleInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
