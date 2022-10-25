@@ -44,6 +44,7 @@ type User {
   name: String!
   cpf: String!
   email: String!
+  roleTypes: String!
   createdAt: DateTime!
   updatedAt: DateTime!
   bets: [Bet!]
@@ -153,12 +154,12 @@ input LoginUserInput {
 }
 
 input CreateRoleInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  type: String!
+  description: String!
 }
 
 input UpdateRoleInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  type: String
+  description: String
   id: Int!
 }

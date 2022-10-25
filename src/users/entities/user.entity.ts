@@ -30,6 +30,11 @@ export class User {
   @Column()
   password: string;
 
+  @Field()
+  @Column({ name: 'role_types' })
+  roleTypes: string
+
+
   @Field(() => Date)
   @CreateDateColumn({ name: 'created_at', type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
   createdAt: Date;
