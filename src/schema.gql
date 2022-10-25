@@ -90,6 +90,7 @@ type Mutation {
   updateCart(updateCartInput: UpdateCartInput!): Cart!
   removeCart: Cart!
   login(loginCredentials: LoginUserInput!): LoginResponse!
+  updatePermission(updatePermissionInput: UpdatePermissionInput!): User!
   createRole(createRoleInput: CreateRoleInput!): Role!
   updateRole(updateRoleInput: UpdateRoleInput!): Role!
   removeRole(id: Int!): Role!
@@ -151,6 +152,11 @@ input UpdateCartInput {
 input LoginUserInput {
   email: String!
   password: String!
+}
+
+input UpdatePermissionInput {
+  id: Int!
+  roles: [String!]!
 }
 
 input CreateRoleInput {
