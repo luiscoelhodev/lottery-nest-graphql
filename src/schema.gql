@@ -29,15 +29,6 @@ type Bet {
   game: Game!
 }
 
-type Role {
-  id: Int!
-  type: String!
-  description: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  users: [User!]!
-}
-
 type User {
   id: Int!
   secureId: String!
@@ -49,6 +40,15 @@ type User {
   updatedAt: DateTime!
   bets: [Bet!]
   roles: [Role!]!
+}
+
+type Role {
+  id: Int!
+  type: String!
+  description: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  users: [User!]!
 }
 
 type Cart {
