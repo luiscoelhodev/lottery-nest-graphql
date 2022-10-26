@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { UseGuards } from '@nestjs/common';
+import { ForbiddenException, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Resolver(() => User)
@@ -17,27 +17,48 @@ export class UsersResolver {
 
   @Query(() => [User], { name: 'users' })
   @UseGuards(JwtAuthGuard)
-  findAll(){
-    return this.usersService.findAll();
+  findAll(@Context() context){
+    return context.req.user.roleTypes.includes('admin') ? 
+           this.usersService.findAll() :
+           new ForbiddenException('You are not authorized to perform this request.')
   }
 
   @Query(() => User, { name: 'user' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.usersService.findOne(id);
+  @UseGuards(JwtAuthGuard)
+  findOne(@Args('id', { type: () => Int }) id: number, @Context() context) {
+    return context.req.user.roleTypes.includes('admin') ? 
+           this.usersService.findOne(id) :
+           new ForbiddenException('You are not authorized to perform this request.')
   }
+
+  //TODO: @Query() @UseGuards(JwtAuthGuard) myUserAccount() {use context.req.user.id to pass as parameter to service
+// as return the user's account with roles and bets relations }
 
   @Query(() => User)
-  findOneByEmail(@Args('email') email: string) {
-    return this.usersService.findOneByEmail(email);
+  @UseGuards(JwtAuthGuard)
+  findOneByEmail(@Args('email') email: string, @Context() context) {
+    return context.req.user.roleTypes.includes('admin') ? 
+           this.usersService.findOneByEmail(email) :
+           new ForbiddenException('You are not authorized to perform this request.')
   }
 
   @Mutation(() => User)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.usersService.update(updateUserInput.id, updateUserInput);
+  @UseGuards(JwtAuthGuard)
+  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput, @Context() context) {
+    return context.req.user.roleTypes.includes('admin') ? 
+           this.usersService.update(updateUserInput.id, updateUserInput) :
+           new ForbiddenException('You are not authorized to perform this request.')
   }
 
+  //TODO: updateMyAccount {}
+
   @Mutation(() => User)
-  removeUser(@Args('id', { type: () => Int }) id: number) {
-    return this.usersService.remove(id);
+  @UseGuards(JwtAuthGuard)
+  removeUser(@Args('id', { type: () => Int }) id: number, @Context() context) {
+    return context.req.user.roleTypes.includes('admin') ? 
+           this.usersService.remove(id) :
+           new ForbiddenException('You are not authorized to perform this request.')
   }
+
+  //TODO: deleteMyAccount {}
 }
