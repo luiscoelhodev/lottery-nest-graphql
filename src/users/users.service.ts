@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from 'src/roles/entities/role.entity';
 import { Repository } from 'typeorm';
 import { CreateUserInput } from './dto/create-user.input';
+import { UpdateMyAccountInput } from './dto/update-my-account.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 
@@ -61,7 +62,7 @@ export class UsersService {
     return await this.usersRepository.findOneOrFail({ where: { id }, relations: {bets: true, roles: true} })
   }
 
-  async updateMyAccount(id: number, updateUserInput: UpdateUserInput) {
+  async updateMyAccount(id: number, updateUserInput: UpdateMyAccountInput) {
     const user = await this.usersRepository.findOneOrFail({ where: { id }, relations: {bets: true, roles: true} })
     this.usersRepository.merge(user, updateUserInput)
     return await this.usersRepository.save(user)

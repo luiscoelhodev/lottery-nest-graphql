@@ -5,6 +5,7 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { ForbiddenException, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { UpdateMyAccountInput } from './dto/update-my-account.input';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -55,7 +56,7 @@ export class UsersResolver {
 
   @Mutation(() => User)
   @UseGuards(JwtAuthGuard)
-  updateMyAccount(@Args('updateUserInput') updateUserInput: UpdateUserInput, @Context() context) {
+  updateMyAccount(@Args('updateUserInput') updateUserInput: UpdateMyAccountInput, @Context() context) {
     return this.usersService.updateMyAccount(context.req.user.id, updateUserInput)
   }
 
