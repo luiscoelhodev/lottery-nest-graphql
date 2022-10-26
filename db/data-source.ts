@@ -10,7 +10,8 @@ export const dataSourceOptions: DataSourceOptions = {
   database: process.env.MYSQL_DB_NAME,
   entities: ['dist/**/*.entity.js'],
   migrations: ['dist/db/migrations/*.js'],
-  migrationsTableName: 'migrations'
+  migrationsTableName: 'migrations',
+  timezone: process.env.TZ_OFFSET
 };
 
 const dataSource = new DataSource(dataSourceOptions);
