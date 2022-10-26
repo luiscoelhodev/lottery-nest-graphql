@@ -40,11 +40,11 @@ export class BetsService {
   }
 
   async findAll() {
-    return this.betsRepository.find();
+    return this.betsRepository.find( { relations: { user: true, game: true } } );
   }
 
   async findOne(id: number) {
-    return await this.betsRepository.findOneOrFail({ where: { id } });
+    return await this.betsRepository.findOneOrFail({ where: { id }, relations: { game: true, user: true } });
   }
 
   async update(id: number, updateBetInput: UpdateBetInput) {
