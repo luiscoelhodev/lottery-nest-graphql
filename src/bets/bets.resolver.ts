@@ -5,6 +5,7 @@ import { CreateBetInput } from './dto/create-bet.input';
 import { UpdateBetInput } from './dto/update-bet.input';
 import { ForbiddenException, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { GraphQLError } from 'graphql';
 
 @Resolver(() => Bet)
 export class BetsResolver {
@@ -13,28 +14,47 @@ export class BetsResolver {
   @Mutation(() => String)
   @UseGuards(JwtAuthGuard)
   createBets(@Args('createBetInput', { type: () => [CreateBetInput] }) createBetInput: CreateBetInput[], @Context() context) {
+    if (context.req.user.error) {
+      return new GraphQLError(context.req.user.error, {
+        extensions: {
+          code: 'BAD_REQUEST'
+        }
+      });
+    }
     return context.req.user.roleTypes.includes('player') ? 
-          this.betsService.create(createBetInput) : 
+          this.betsService.create(context.req.user.id, createBetInput) : 
           new ForbiddenException('You are not authorized to perform this request.')
   }
 
   @Query(() => [Bet], { name: 'bets' })
-  findAll() {
-    return this.betsService.findAll();
+  @UseGuards(JwtAuthGuard)
+  findAll(@Context() context) {
+    return context.req.user.roleTypes.includes('admin') ? 
+           this.betsService.findAll() :
+           new ForbiddenException('You are not authorized to perform this request.')
   }
 
   @Query(() => Bet, { name: 'bet' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.betsService.findOne(id);
+  @UseGuards(JwtAuthGuard)
+  findOne(@Args('id', { type: () => Int }) id: number, @Context() context) {
+    return context.req.user.roleTypes.includes('admin') ?
+           this.betsService.findOne(id) :
+           new ForbiddenException('You are not authorized to perform this request.')
   }
 
   @Mutation(() => Bet)
-  updateBet(@Args('updateBetInput') updateBetInput: UpdateBetInput) {
-    return this.betsService.update(updateBetInput.id, updateBetInput);
+  @UseGuards(JwtAuthGuard)
+  updateBet(@Args('updateBetInput') updateBetInput: UpdateBetInput, @Context() context) {
+    return context.req.user.roleTypes.includes('admin') ?
+           this.betsService.update(updateBetInput.id, updateBetInput) :
+           new ForbiddenException('You are not authorized to perform this request.')
   }
 
   @Mutation(() => Bet)
-  removeBet(@Args('id', { type: () => Int }) id: number) {
-    return this.betsService.remove(id);
+  @UseGuards(JwtAuthGuard)
+  removeBet(@Args('id', { type: () => Int }) id: number, @Context() context) {
+    return context.req.user.roleTypes.includes('admin') ?
+           this.betsService.remove(id) :
+           new ForbiddenException('You are not authorized to perform this request.')
   }
 }

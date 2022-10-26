@@ -132,7 +132,6 @@ input UpdateGameInput {
 }
 
 input CreateBetInput {
-  userId: Int!
   gameType: String!
   numbers: String!
 }

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cart } from 'src/cart/entities/cart.entity';
 import { Game } from 'src/games/entities/game.entity';
@@ -12,7 +12,7 @@ import { Bet } from './entities/bet.entity';
 export class BetsService {
   constructor(@InjectRepository(Bet) private betsRepository: Repository<Bet>, @InjectRepository(Game) private gamesRepository: Repository<Game>, @InjectRepository(User) private usersRepository: Repository<User>, @InjectRepository(Cart) private cartRepository: Repository<Cart>) {}
 
-  async create(createBetInput: CreateBetInput[]) {
+  async create(userId: number | number, createBetInput: CreateBetInput[]) {
 
     const cart = await this.cartRepository.find()
     const minCartValue = cart[0].minCartValue
@@ -29,7 +29,7 @@ export class BetsService {
     }
     await Promise.all(
       createBetInput.map(async (bet) => {
-        const user = await this.usersRepository.findOneOrFail({ where: { id: bet.userId } })
+        const user = await this.usersRepository.findOneOrFail({ where: { id: userId } })
         const game = await this.gamesRepository.findOneByOrFail( { type: bet.gameType } )
         const newBet = this.betsRepository.create({ user, game, numbers: bet.numbers })
 
@@ -48,12 +48,20 @@ export class BetsService {
   }
 
   async update(id: number, updateBetInput: UpdateBetInput) {
-    const betFound = await this.betsRepository.findOneOrFail({ where: { id }})
+    const betFound = await this.betsRepository.findOneOrFail({ where: { id }, relations: { user: true, game: true }})
     this.betsRepository.merge(betFound, updateBetInput);
     return await this.betsRepository.save(betFound);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} bet`;
+  async remove(id: number) {
+    try {
+      const betFound = await this.betsRepository.findOneOrFail({ where: { id } })
+      const copyOfBetFound = {...betFound}
+      await this.betsRepository.remove(betFound)
+      return copyOfBetFound
+      
+    } catch (error) {
+      return new NotFoundException('Could not find any bet with this id provided.')
+    }
   }
 }

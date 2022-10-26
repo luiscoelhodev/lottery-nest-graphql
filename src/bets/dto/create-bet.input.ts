@@ -4,10 +4,6 @@ import { IsAlphanumeric, IsPositive, Matches } from 'class-validator';
 @InputType()
 export class CreateBetInput {
 
-  @IsPositive()
-  @Field(() => Int)
-  userId: number;
-
   @IsAlphanumeric()
   @Field()
   gameType: string;
