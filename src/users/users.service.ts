@@ -40,7 +40,7 @@ export class UsersService {
   }
 
   async update(id: number, updateUserInput: UpdateUserInput) {
-    const user = await this.usersRepository.findOneOrFail({ where: { id } })
+    const user = await this.usersRepository.findOneOrFail({ where: { id }, relations: { bets: true, roles: true }})
     this.usersRepository.merge(user, updateUserInput)
 
     return await this.usersRepository.save(user);
@@ -48,7 +48,7 @@ export class UsersService {
 
   async remove(id: number) {
     try {
-      const userFound = await this.usersRepository.findOneOrFail({ where: { id }})
+      const userFound = await this.usersRepository.findOneOrFail({ where: { id }, relations: { bets: true, roles: true }})
       const copyOfUserFoundToBeUsedAsReturnType = { ...userFound }
       await this.usersRepository.remove(userFound)
       return copyOfUserFoundToBeUsedAsReturnType
@@ -59,5 +59,23 @@ export class UsersService {
 
   async myUserAccount(id: number) {
     return await this.usersRepository.findOneOrFail({ where: { id }, relations: {bets: true, roles: true} })
+  }
+
+  async updateMyAccount(id: number, updateUserInput: UpdateUserInput) {
+    const user = await this.usersRepository.findOneOrFail({ where: { id }, relations: {bets: true, roles: true} })
+    this.usersRepository.merge(user, updateUserInput)
+    return await this.usersRepository.save(user)
+  }
+
+  async deleteMyAccount(id: number) {
+    try {
+      const user = await this.usersRepository.findOneOrFail({ where: { id }, relations: { bets: true, roles: true } })
+      const copyOfUserFound = { ...user }
+      await this.usersRepository.remove(user)
+      return copyOfUserFound      
+    } catch (error) {
+      return new NotFoundException('User not found to be deleted!')
+    }
+
   }
 }

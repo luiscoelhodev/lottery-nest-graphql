@@ -81,7 +81,9 @@ type Query {
 type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
+  updateMyAccount(updateUserInput: UpdateUserInput!): User!
   removeUser(id: Int!): User!
+  deleteMyAccount: User!
   createGame(createGameInput: CreateGameInput!): Game!
   updateGame(updateGameInput: UpdateGameInput!): Game!
   removeGame(id: Int!): Game!

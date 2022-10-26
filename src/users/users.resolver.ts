@@ -31,9 +31,6 @@ export class UsersResolver {
            new ForbiddenException('You are not authorized to perform this request.')
   }
 
-  //TODO: @Query() @UseGuards(JwtAuthGuard) myUserAccount() {use context.req.user.id to pass as parameter to service
-// as return the user's account with roles and bets relations }
-
   @Query(() => User)
   @UseGuards(JwtAuthGuard)
   myUserAccount(@Context() context) {
@@ -56,7 +53,11 @@ export class UsersResolver {
            new ForbiddenException('You are not authorized to perform this request.')
   }
 
-  //TODO: updateMyAccount {}
+  @Mutation(() => User)
+  @UseGuards(JwtAuthGuard)
+  updateMyAccount(@Args('updateUserInput') updateUserInput: UpdateUserInput, @Context() context) {
+    return this.usersService.updateMyAccount(context.req.user.id, updateUserInput)
+  }
 
   @Mutation(() => User)
   @UseGuards(JwtAuthGuard)
@@ -66,5 +67,9 @@ export class UsersResolver {
            new ForbiddenException('You are not authorized to perform this request.')
   }
 
-  //TODO: deleteMyAccount {}
+  @Mutation(() => User)
+  @UseGuards(JwtAuthGuard)
+  deleteMyAccount(@Context() context) {
+    return this.usersService.deleteMyAccount(context.req.user.id)
+  }
 }
