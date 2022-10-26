@@ -6,12 +6,12 @@ export class UpdateRoleInput {
   @Field(() => Int)
   id: number;
 
-  @Field()
+  @Field({nullable: true})
   @IsOptional()
   @IsAlpha()
   type: string;
 
-  @Field()
+  @Field({nullable: true})
   @IsOptional()
   description: string;
 }
