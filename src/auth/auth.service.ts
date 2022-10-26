@@ -34,6 +34,7 @@ export class AuthService {
 
   async updatePermission(updatePermissionInput: UpdatePermissionInput) {
     const user = await this.usersService.findOne(updatePermissionInput.id)
+    if (user === null) return new Error('Could not find this user in DB.')
     user.roles = []
     user.roleTypes = ''
     await this.usersRepository.save(user)
