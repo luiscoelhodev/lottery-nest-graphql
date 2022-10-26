@@ -26,11 +26,11 @@ export class UsersService {
   }
 
   async findAll() {
-    return await this.usersRepository.find();
+    return await this.usersRepository.find({ relations: {bets: true, roles: true }});
   }
 
   async findOne(id: number) {
-    const user = await this.usersRepository.findOne({ where: { id } })
+    const user = await this.usersRepository.findOne({ where: { id }, relations: { bets: true, roles: true } })
     return user;
   }
 
@@ -58,6 +58,6 @@ export class UsersService {
   }
 
   async myUserAccount(id: number) {
-    return await this.usersRepository.findOneOrFail({ where: { id } })
+    return await this.usersRepository.findOneOrFail({ where: { id }, relations: {bets: true, roles: true} })
   }
 }
