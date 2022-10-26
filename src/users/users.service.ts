@@ -56,4 +56,8 @@ export class UsersService {
       return new NotFoundException('User not found to be deleted!')
     }
   }
+
+  async myUserAccount(id: number) {
+    return await this.usersRepository.findOneOrFail({ where: { id } })
+  }
 }

@@ -36,6 +36,12 @@ export class UsersResolver {
 
   @Query(() => User)
   @UseGuards(JwtAuthGuard)
+  myUserAccount(@Context() context) {
+    return this.usersService.myUserAccount(context.req.user.id);
+  }
+
+  @Query(() => User)
+  @UseGuards(JwtAuthGuard)
   findOneByEmail(@Args('email') email: string, @Context() context) {
     return context.req.user.roleTypes.includes('admin') ? 
            this.usersService.findOneByEmail(email) :

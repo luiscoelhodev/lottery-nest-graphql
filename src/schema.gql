@@ -66,6 +66,7 @@ type LoginResponse {
 type Query {
   users: [User!]!
   user(id: Int!): User!
+  myUserAccount: User!
   findOneByEmail(email: String!): User!
   games: [Game!]!
   game(id: Int!): Game!
