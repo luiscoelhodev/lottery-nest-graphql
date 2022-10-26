@@ -71,6 +71,7 @@ type Query {
   game(id: Int!): Game!
   bets: [Bet!]!
   bet(id: Int!): Bet!
+  carts: [Cart!]!
   cart(id: Int!): Cart!
   roles: [Role!]!
   role(id: Int!): Role!
