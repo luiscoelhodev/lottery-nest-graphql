@@ -1,35 +1,52 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Context } from '@nestjs/graphql';
 import { RolesService } from './roles.service';
 import { Role } from './entities/role.entity';
 import { CreateRoleInput } from './dto/create-role.input';
 import { UpdateRoleInput } from './dto/update-role.input';
+import { ForbiddenException, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Resolver(() => Role)
 export class RolesResolver {
   constructor(private readonly rolesService: RolesService) {}
 
   @Mutation(() => Role)
-  createRole(@Args('createRoleInput') createRoleInput: CreateRoleInput) {
-    return this.rolesService.create(createRoleInput);
+  @UseGuards(JwtAuthGuard)
+  createRole(@Args('createRoleInput') createRoleInput: CreateRoleInput, @Context() context) {
+    return context.req.user.roleTypes.includes('admin') ? 
+           this.rolesService.create(createRoleInput) :
+           new ForbiddenException('You are not authorized to perform this request.')
   }
 
   @Query(() => [Role], { name: 'roles' })
-  findAll() {
-    return this.rolesService.findAll();
+  @UseGuards(JwtAuthGuard)
+  findAll(@Context() context) {
+    return context.req.user.roleTypes.includes('admin') ? 
+           this.rolesService.findAll() :
+           new ForbiddenException('You are not authorized to perform this request.')
   }
 
   @Query(() => Role, { name: 'role' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.rolesService.findOne(id);
+  @UseGuards(JwtAuthGuard)
+  findOne(@Args('id', { type: () => Int }) id: number, @Context() context) {
+    return context.req.user.roleTypes.includes('admin') ? 
+           this.rolesService.findOne(id) :
+           new ForbiddenException('You are not authorized to perform this request.')
   }
 
   @Mutation(() => Role)
-  updateRole(@Args('updateRoleInput') updateRoleInput: UpdateRoleInput) {
-    return this.rolesService.update(updateRoleInput.id, updateRoleInput);
+  @UseGuards(JwtAuthGuard)
+  updateRole(@Args('updateRoleInput') updateRoleInput: UpdateRoleInput, @Context() context) {
+    return context.req.user.roleTypes.includes('admin') ? 
+           this.rolesService.update(updateRoleInput.id, updateRoleInput) :
+           new ForbiddenException('You are not authorized to perform this request.')
   }
 
   @Mutation(() => Role)
-  removeRole(@Args('id', { type: () => Int }) id: number) {
-    return this.rolesService.remove(id);
+  @UseGuards(JwtAuthGuard)
+  removeRole(@Args('id', { type: () => Int }) id: number, @Context() context) {
+    return context.req.user.roleTypes.includes('admin') ? 
+           this.rolesService.remove(id) :
+           new ForbiddenException('You are not authorized to perform this request.')
   }
 }
